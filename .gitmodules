@@ -1,3 +1,6 @@
 [submodule "R_prj2"]
 	path = R_prj2
 	url = git@github.com:eyedvabny/ProgrammingAssignment2.git
+[submodule "EDA_prj1"]
+	path = EDA_prj1
+	url = https://github.com/eyedvabny/ExData_Plotting1
