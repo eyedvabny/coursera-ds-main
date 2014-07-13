@@ -18,10 +18,12 @@ best <- function(state,outcome){
   }
   
   # Read in the outcome data
-  outcome_data <- read.csv("data/outcome-of-care-measures.csv", colClasses='character')
+  outcome_data <- read.csv("data/outcome-of-care-measures.csv",
+                           colClasses='character')
   
   # Select out hospitals from the correct state and with correct outcome
-  matched_hospitals <- subset(outcome_data,State==state,select=c(2,allowed_outcomes[[outcome]]))
+  matched_hospitals <- subset(outcome_data,State==state,
+                              select=c(2,allowed_outcomes[[outcome]]))
   matched_hospitals[,2] <- as.numeric(matched_hospitals[,2])
   matched_hospitals <- na.omit(matched_hospitals)
   

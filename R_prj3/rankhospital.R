@@ -19,15 +19,18 @@ rankhospital <- function(state, outcome, num = "best") {
   }
   
   # Read in the outcome data
-  outcome_data <- read.csv("data/outcome-of-care-measures.csv", colClasses='character')
+  outcome_data <- read.csv("data/outcome-of-care-measures.csv",
+                           colClasses='character')
   
   # Select out hospitals from the correct state and with correct outcome
-  matched_hospitals <- subset(outcome_data,State==state,select=c(2,allowed_outcomes[[outcome]]))
+  matched_hospitals <- subset(outcome_data,State==state,
+                              select=c(2,allowed_outcomes[[outcome]]))
   matched_hospitals[,2] <- as.numeric(matched_hospitals[,2])
   matched_hospitals <- na.omit(matched_hospitals)
   
   # Sort the dataframe by death rate and alphabetically
-  matched_hospitals <- matched_hospitals[order(matched_hospitals[,2],matched_hospitals[,1]),]
+  matched_hospitals <- matched_hospitals[order(matched_hospitals[,2],
+                                               matched_hospitals[,1]),]
   
   if(num=='best'){
     return(matched_hospitals[1,1])

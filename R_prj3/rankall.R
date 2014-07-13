@@ -10,7 +10,8 @@ rankall <- function(outcome, num = "best") {
   }
   
   # Read in the outcome data
-  outcome_data <- read.csv("data/outcome-of-care-measures.csv", colClasses='character')
+  outcome_data <- read.csv("data/outcome-of-care-measures.csv",
+                           colClasses='character')
   
   # Clean the columns and remove NA
   hospitals <- outcome_data[,c(2,7,allowed_outcomes[[outcome]])]
