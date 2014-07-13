@@ -11,7 +11,6 @@ The code contained within this repository is my own independent work unless stat
 * [Hello World] (HelloWorld.md)
 
 [**R Programming**](https://www.coursera.org/course/rprog) *(6/2-7/1)*
-* [Swirl](R_swirl)
 * [Project 1](R_prj1)
 * [Project 2](https://github.com/eyedvabny/ProgrammingAssignment2)
 * [Project 3](R_prj3)
