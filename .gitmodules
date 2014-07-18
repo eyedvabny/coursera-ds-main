@@ -7,3 +7,6 @@
 [submodule "DST_sharing"]
 	path = DST_sharing
 	url = git@github.com:eyedvabny/coursera-ds-datasharing.git
+[submodule "RR_prj1"]
+	path = RR_prj1
+	url = git@github.com:eyedvabny/coursera-ds-RRprj1.git
