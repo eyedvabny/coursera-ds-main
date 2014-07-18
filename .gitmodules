@@ -1,6 +1,9 @@
 [submodule "R_prj2"]
 	path = R_prj2
-	url = git@github.com:eyedvabny/ProgrammingAssignment2.git
+	url = git@github.com:eyedvabny/coursera-ds-Rprj2.git 
 [submodule "EDA_prj1"]
 	path = EDA_prj1
 	url = git@github.com:eyedvabny/ExData_Plotting1.git 
+[submodule "DST_sharing"]
+	path = DST_sharing
+	url = git@github.com:eyedvabny/coursera-ds-datasharing.git

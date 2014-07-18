@@ -8,11 +8,11 @@ Please note that for the sake of portability, I do not store the original data s
 The code contained within this repository is my own independent work unless stated otherwise. I am making it publicly available, but please do not copy it if doing so would violate any code of integrity you have agreed to abide by.
 
 [**Data Scientist's Toolbox**](https://www.coursera.org/course/datascitoolbox) *(6/2-7/1)*
-* [Hello World] (HelloWorld.md)
+* [Sharing Guidelines] (https://github.com/eyedvabny/coursera-ds-datasharing)
 
 [**R Programming**](https://www.coursera.org/course/rprog) *(6/2-7/1)*
 * [Project 1](R_prj1)
-* [Project 2](https://github.com/eyedvabny/ProgrammingAssignment2)
+* [Project 2](https://github.com/eyedvabny/coursera-ds-Rprj2)
 * [Project 3](R_prj3)
 
 [**Getting and Cleaning Data**](https://www.coursera.org/course/getdata) *(7/7-8/4)*
