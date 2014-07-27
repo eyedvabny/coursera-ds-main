@@ -8,7 +8,7 @@ Please note that for the sake of portability, I do not store the original data s
 The code contained within this repository is my own independent work unless stated otherwise. I am making it publicly available, but please do not copy it if doing so would violate any code of integrity you have agreed to abide by.
 
 [**Data Scientist's Toolbox**](https://www.coursera.org/course/datascitoolbox) *(6/2-7/1)*
-* [Sharing Guidelines] (https://github.com/eyedvabny/coursera-ds-datasharing)
+* [Sharing Guidelines](https://github.com/eyedvabny/coursera-ds-datasharing)
 
 [**R Programming**](https://www.coursera.org/course/rprog) *(6/2-7/1)*
 * [Project 1](R_prj1)
@@ -16,9 +16,12 @@ The code contained within this repository is my own independent work unless stat
 * [Project 3](R_prj3)
 
 [**Getting and Cleaning Data**](https://www.coursera.org/course/getdata) *(7/7-8/4)*
+* [Project 1](https://github.com/eyedvabny/coursera-ds-GCDprj1)
 
 [**Exploratory Data Analysis**](https://www.coursera.org/course/exdata) *(7/7-8/4)*
-* [Project 1](https://github.com/eyedvabny/ExData_Plotting1)
+* [Project 1](https://github.com/eyedvabny/coursera-ds-EDAprj1)
+* [Project 2](EDA_prj2)
 
 [**Reproducible Research**](https://www.coursera.org/course/repdata) *(7/7-8/4)*
 * [Project 1](https://github.com/eyedvabny/coursera-ds-RRprj1)
+* [Project 2](RR_prj2)

@@ -2,5 +2,8 @@
 .Rproj.user
 .Rhistory
 .RData
+*_cache
 R_prj1/specdata
 R_prj3/data
+RR_prj2/StormData.csv.bz2
+EDA_prj2/FNEI_*
