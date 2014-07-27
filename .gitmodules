@@ -3,10 +3,13 @@
 	url = git@github.com:eyedvabny/coursera-ds-Rprj2.git 
 [submodule "EDA_prj1"]
 	path = EDA_prj1
-	url = git@github.com:eyedvabny/ExData_Plotting1.git 
+    url = git@github.com:eyedvabny/coursera-ds-EDAprj1.git
 [submodule "DST_sharing"]
 	path = DST_sharing
 	url = git@github.com:eyedvabny/coursera-ds-datasharing.git
 [submodule "RR_prj1"]
 	path = RR_prj1
 	url = git@github.com:eyedvabny/coursera-ds-RRprj1.git
+[submodule "GCD_prj1"]
+	path = GCD_prj1
+	url = git@github.com:eyedvabny/coursera-ds-GCDprj1.git
