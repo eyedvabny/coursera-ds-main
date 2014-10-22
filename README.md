@@ -25,3 +25,6 @@ The code contained within this repository is my own independent work unless stat
 [**Reproducible Research**](https://www.coursera.org/course/repdata) *(7/7-8/4)*
 * [Project 1](https://github.com/eyedvabny/coursera-ds-RRprj1)
 * [Project 2](RR_prj2)
+
+[**Statistical Inference](https://www.coursera.org/course/statinference) *(9/1-9/29)*
+* [Project 1](SI_prj1)
