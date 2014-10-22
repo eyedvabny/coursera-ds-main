@@ -1,0 +1,60 @@
+---
+title: 'Statistical Inference: Project 1'
+author: "Eugene Yedvabny"
+output:
+  html_document:
+    keep_md: true
+  pdf_document:
+    latex_engine: lualatex
+---
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(fig.path="figs/")
+library(dplyr,warn.conflicts=FALSE)
+library(ggplot2)
+```
+
+## Question 2: Statistics of the ToothGrowth Dataset
+
+```{r}
+data(ToothGrowth)
+```
+
+The dataset we're asked to analyze is titled __The Effect of Vitamin C on Tooth Growth in Guinea Pigs__ and contains three fields: numeric _len_ for tooth length, factor _supp_ for two types of supplement (VC for Ascorbic Acid or OJ for Orange Juice), and numeric _dose_ for the dose in milligrams. The dataset contains 60 observations: 10 guinea pigs x 2 delivery methods x 3 dosage values.
+
+```{r q2_len_vs_supp, echo=FALSE,fig.show='hold',fig.width=3.5, fig.height=3}
+ggplot(ToothGrowth,aes(x=dose,y=len,group=supp)) + 
+  geom_point(aes(color=supp,shape=supp)) +
+  geom_smooth(aes(color=supp), method="lm") +
+  ylab("Tooth Length (mm)") + 
+  xlab("Supplement Dose (mg)")
+
+ggplot(ToothGrowth,aes(x=factor(dose),y=len,color=supp)) +
+  geom_boxplot() +
+  ylab("Tooth Length (mm)") + 
+  xlab("Supplement Dose (mg)")
+```
+
+We can see that there's indeed a growth pattern between the dosage of vitamin C administered and the size of the teeth. It's a lot harder to establish whether the _delivery_ method for the vitamin has any impact on the results.
+
+Let's work under the assumption that the observed guinea pigs were randomly taken from the overall population, so that the _population_ variance is the same and we can apply a t-test. A cursory glance through the teeth lengths suggests that the samples of guiney pigs are independent, and so we should be using _unpaired_ testing.
+
+The __null hypothesis__ for this experiment is that the delivery method has no impact, e.g., the confidence interval for the difference in two samples should include 0.
+
+```{r}
+vc_5 <- filter(ToothGrowth,dose==0.5 & supp=='VC')$len
+vc_10 <- filter(ToothGrowth,dose==1.0 & supp=='VC')$len
+vc_20 <- filter(ToothGrowth,dose==2.0 & supp=='VC')$len
+
+oj_5 <- filter(ToothGrowth,dose==0.5 & supp=='OJ')$len
+oj_10 <- filter(ToothGrowth,dose==1.0 & supp=='OJ')$len
+oj_20 <- filter(ToothGrowth,dose==2.0 & supp=='OJ')$len
+
+t.test(vc_5, oj_5, conf.level=0.95, var.equal=TRUE)
+
+t.test(vc_10,oj_10,conf.level=0.95, var.equal=TRUE)
+
+t.test(vc_20,oj_20,conf.level=0.95, var.equal=TRUE)
+```
+
+As we can see from the above p-values and confidence intervals, the two delivery mechanism yield different means for 0.5 and 1.0 mg doses, allowing us to reject the null hypothesis. For the 2.0 mg dose the CI includes 0, so the difference in the mechanisms is insignificant.
