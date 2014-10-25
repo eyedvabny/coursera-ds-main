@@ -1,0 +1,158 @@
+---
+title: 'Regression Models: Project 1'
+output:
+  html_document: default
+  pdf_document:
+    fig_caption: yes
+    fig_height: 3
+    fig_width: 6.5
+---
+```{r,echo=FALSE}
+knitr::opts_chunk$set(echo=F)
+knitr::opts_chunk$set(comment=NA)
+knitr::opts_chunk$set(results='hold')
+```
+
+```{r,message=FALSE,warning=FALSE}
+library(ggplot2)
+library(gridExtra)
+
+data(mtcars)
+
+mtcars$cyl <- factor(mtcars$cyl)
+mtcars$gear <- factor(mtcars$gear)
+mtcars$carb <- factor(mtcars$carb)
+
+mtcars$vs <- factor(mtcars$vs, labels=c("V","S"))
+mtcars$am <- factor(mtcars$am, labels=c("Manual","Automatic"))
+```
+
+## Summary
+
+The goal of this analysis is to investigate the impact of the transmission type on the fuel economy of 32 vehicles in the 1974 Motor Trend dataset. We find that there is on average a 7 mpg difference between vehicles with manual transmission and vehicles with automatic transmission. A linear fit of available predictors to the fuel economy reveals that the most influential predictors are _transmission type_, _number of cylinders_, the _horsepower_, and _weight of the vehicles_. Under this regression model, a change in the trasmission from manual to automatic accounts for 1.8 more miles per gallon when all other predictors are held constant.
+
+## Introduction
+
+The dataset for this analysis, `mtcars`, comes from the 1974 _Motor Trend_ magazine and lists performance statistics of 32 vehicles (rows) for 11 categories (columns). There are six continuous numerical variables:
+
+* `mpg`: miles per gallon
+* `disp`: engine displacement (cu. in.)
+* `hp`: horsepower
+* `drat`: read axle ratio
+* `wt`: weight (lb/1000)
+* `qsec`: time per 1/4 mile
+
+Additionally there are three discreet variables:
+
+* `cyl`: number of cylinders in the vehicle
+* `gear`: number of forward gears
+* `carb`: number of carburetors
+
+And lastly there are two categorical variables:
+
+* `vs`: V/S
+* `am`: __transmission__ (automatic or manual)
+
+In the course of this analysis we will be looking at the impact of the 10 potential predictors on the fuel economy (mpg) of the vehicles in the dataset. We are specifically interested in answering whether the type of vehicle transmission has an impact on the mpg.
+
+## Exploratory Analysis
+
+As the __Figure 1__ shows, there is a _visual_ difference between the two populations, suggesting that the transmission type is at least correlated with fuel economy. There is a larger sample of manual-transmission cars than automatic transmission cars, so the sample distribution looks more normal in the former case. Since there are only 32 cars _total_ we will leverage a t-test to confirm whether the populations are different. We will assume constant population variance since there was no [outward] bias in the automatic-vs-manual sampling.
+
+```{r}
+man_cars <- mtcars$mpg[mtcars$am == "Manual"]
+aut_cars <- mtcars$mpg[mtcars$am == "Automatic"]
+t.test(man_cars,aut_cars,var.equal=T)
+```
+
+The t-test indeed shows that we can reject the null hypothesis and that the fuel economy differs across transmission types. Manual transmission cars have on average __7 fewer miles per gallon__ than automatic transmission cars. Unfortunately we don't yet know what counfounding variables affect the relationship and thus need to investigate the correlations between the 10 possible predictors and mpg.
+
+## Regression Analysis
+
+The questions we are investigating is _whether the transmission type has an effect on the fuel economy_. As such it makes sense to start with a model that just predicts mpg based off am.
+
+```{r,echo=T}
+simp.fit <- lm(mpg~am,data=mtcars)
+formula(simp.fit)
+summary(simp.fit)$adj.r.squared
+```
+
+With an $R^2$ of 34% the model is pretty poor at explaining the variance in mpg by transmission alone. We need to incorporate more confounders but since we don't know the interactions (correlations of factor variables are beyond the scope of this report) it is best to start with an over-fit model and step our way backwards.
+
+Let's continue with a full-interaction model, where we consider the impact of all 10 predictors. The big and unfortunately unknown question is whether the predictors are _independent_. Perhaps the number of gears is correlated with the transmission type or the number of cylinders. These kind of interactions should be excluded from the model since they do not contribute any meaningful information and only serve to grow the variance.
+
+```{r,echo=T}
+full.fit <- lm(mpg~am+.,data=mtcars)
+formula(full.fit)
+summary(full.fit)$adj.r.squared
+```
+
+__Table 2__ in the appendix shows the summary of the fit coefficients. The $R^2$ value above implies that only 78% of variation is explained by our model. We can see that no one predictor has a significant p-value, suggesting the model is already overfit. We will leverage the AIC to optimize the model by removing insignificant confounders. The `step` function will optimize on the AIC and return the best-fitting model.
+
+```{r, echo=T}
+optim.fit <- step(full.fit,trace=0)
+formula(optim.fit)
+summary(optim.fit)$adj.r.squared
+```
+
+The coefficients of the new model are presented in __Table 3__, while the difference in the AIC is in __Table 4__. The new model now accounts for 84% of the variability and has much improved p-values.
+
+Based off the coefficients in __Table 3__, when all other predictors are held constant, a change in the transmission type from manual to automatic adds __1.8 miles per gallon__.
+
+Unfortunately the std. error for the actual parameter we're looking for, `am`, is pretty high, resulting in a rather useless confidence interval: _with **95% confidence**, the increase in mpg for the change from manual to automatic transmission lies within **-1.06** and **4.68** mpg_. This suggests that perhaps transmission is a dependent variable of other confounders, but excluding it from the model would not allow us to quantify the change in mileage per change in transmission type.
+
+## Residual analysis
+
+Our fit is only valid if it satisfies the requirements of a linear fit: independence, normality and homoscedasticity. We can validate all three by plotting the residuals of the fit against the predicted values and in a QQ plot.
+
+As we can see from __Figure 2__, the residuals appear randomly and uniformly distributed around 0. The QQ plot further confirms the normal distribution of residuals, thus justifying our model.
+
+## Conclusion
+
+It was found that the car transmission type does indeed have a meaningful impact on fuel economy of the vehicle. Of the 32 cars analyzed, manual-transmission cars on average have 7 fewer miles per gallon than automatic-transmission cars. The type of transmission alone, however, is not the only predictor of a vehicle's fuel effincy. A linear fit of mpg to the ten possible predictors showed that fuel economy is a function of _transmission_, _number of cylinders_, _horse power_, and _vehicle weight_. Under such a model, with all other factors held constant, the change of transmission from manual to automatic accounts for __1.8 more miles per gallon__ on average.
+
+\pagebreak{}
+
+## Appendix
+
+```{r figure_1, fig.cap="Distribution of fuel economy as function of transmission type"}
+ggplot(mtcars,aes(y=mpg,x=am))+
+  geom_boxplot(width=0.5)+
+  geom_jitter()+
+  xlab("Transmission")+
+  ylab("Fuel Economy (MPG)")+
+  theme_bw()
+```
+
+```{r, figure_2, fig.cap="Residual disribution and QQ plot for optimal fit to mpg"}
+fit.data <- data.frame(fit=predict(optim.fit),resid=residuals(optim.fit))
+
+p1<- ggplot(fit.data,aes(x=fit,y=resid))+
+      geom_point(size=3)+
+      geom_hline(yintercept=0,color="red")+
+      ylim(-6,6)+
+      xlab("Predicted Fuel Economy (MPG)")+
+      ylab("Residuals")+
+      theme_bw()
+
+p2<-ggplot(fit.data,aes(sample=resid))+
+      stat_qq()+
+      ylim(-6,6)+
+      xlab("Theoretical Quantile")+
+      ylab("Residual")+
+      theme_bw()
+
+grid.arrange(p1,p2,ncol=2)
+```
+
+\pagebreak{}
+
+```{r, results='asis'}
+knitr::kable(summary(simp.fit)$coefficients,caption="Predicted coefficients for a simple linear fit of am to mpg")
+
+knitr::kable(summary(full.fit)$coefficients,caption="Predicted coefficients for a full-model linear fit to mpg")
+
+knitr::kable(summary(optim.fit)$coefficients,caption="Predicted coefficients for an optimized linear fit to mpg")
+
+knitr::kable(AIC(simp.fit,full.fit,optim.fit),caption="Information Criterion of full-predictor vs optimized models")
+```
